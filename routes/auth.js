@@ -5,7 +5,6 @@ jwt = require("jsonwebtoken")
 
 
 router.post("/starwars/login", async (request, response) => {
-  console.log(request.body)
   if (request.body.username=="Luke" && request.body.password=="DadSucks") {
     response.json({
       status: 200,

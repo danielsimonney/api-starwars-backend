@@ -20,8 +20,6 @@ router.get("/starwars/wookie/:type", async (request, response) => {
   let allTypes = ["species","people","starships","planets","films","vehicles"]
   if(allTypes.includes(type)){
     getAllDataFromTypeWookie(type).then(res =>{
-      console.log("mmm")
-      console.log(res)
       response.json(translate(res))
     });
   }else{
@@ -32,7 +30,6 @@ router.get("/starwars/wookie/:type", async (request, response) => {
 const getAllDataFromTypeWookie=async function(type,data=[],page=1){
   return api.get("/"+type+(page==1?'/?':("/?page="+page+"&"))+"format=wookiee")
   .then(res => {
-    console.log("azert")
     var datajsonify=res.data
     if(type=="films"){
       const regex = /whhuanan/gi;
@@ -41,17 +38,13 @@ const getAllDataFromTypeWookie=async function(type,data=[],page=1){
       let response2 = response.replace(regexEscape,"\\r\\n")
       let finaleData = JSON.parse(response2);
       return finaleData.rcwochuanaoc
-      // return JSON.parse(response2)
     }
     if(typeof(datajsonify)=="string"){
     const regex = /whhuanan/gi;
     let response = res.data.replace(regex,null)
     datajsonify=(JSON.parse(response));
     }
-    console.log(datajsonify)
-    console.log(typeof(datajsonify))
     if(datajsonify.whwokao != null){
-      // console.log("calling next page", datajsonify.rcwochuanaoc)
       datajsonify.rcwochuanaoc.forEach(element => {
         data.push(element)
       });
@@ -65,12 +58,9 @@ const getAllDataFromTypeWookie=async function(type,data=[],page=1){
       }
         return getAllDataFromTypeWookie(type,data,page+1)
     }else{
-      console.log("kkkkkkkkmm")
       datajsonify.rcwochuanaoc.forEach(element => {
         data.push(element)
       });
-      // let finaleData = translate(data)
-      // console.log(finaleData)
       return data;
       }
     })
@@ -85,7 +75,6 @@ const getAlldataFromType =async function(type,data=[],page=1){
   return api.get("/"+type+(page==1?'':("/?page="+page)))
   .then(res => {
     if(res.data.next != null){
-      console.log("calling next page", res.data.next)
       res.data.results.forEach(element => {
         data.push(element)
       });
@@ -94,8 +83,6 @@ const getAlldataFromType =async function(type,data=[],page=1){
       res.data.results.forEach(element => {
         data.push(element)
       });
-      console.log(data.length)
-      console.log("returning data", data.length)
       let finaleData = replaceUrl(data)
       return finaleData;
       }
@@ -137,8 +124,6 @@ router.get("/starwars/wookie/:type/:id", async (request, response) => {
       let resp=(JSON.parse(response2));
       response.json(translate(resp))
       }else{
-        // console.log(translate(res.data))
-        // console.log(JSON.parse(translate(res.data)))
      response.json(translate(res.data))
       }
     })
@@ -161,7 +146,6 @@ return JSON.parse(resp)
 }
 
 function translate(data){
-  console.log(typeof(data))
   if(typeof(data)!=="string"){
     data=JSON.stringify(data)
   }
@@ -181,8 +165,6 @@ function translate(data){
   let resp4 = resp3.replace(regexPlanet,"/planets/")
   let resp5 = resp4.replace(regexPeople,"/people/")
   let resp6 = resp5.replace(regexSpecies,"/species/")
-  // console.log(resp6)
-
   return JSON.parse(resp6)
 }
 module.exports = router;
